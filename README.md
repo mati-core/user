@@ -11,14 +11,12 @@ composer require mati-core/user
 Insert next code in class BasePresenter
 
 ```php
+/**
+ * @var string
+ */
+protected $pageRight = 'cms';
 
-    /**
-	 * @var string
-	 */
-	protected $pageRight = 'cms';
-	
-    use UserPresenterAccessTrait;
-
+use UserPresenterAccessTrait;
 ```
 
 Commands
@@ -48,4 +46,25 @@ Create user account and associate in default user group.
 
 ```bash
 php www/index.php app:user:create <username> <password> 
+```
+
+API
+---
+
+**Sign In**
+
+Link
+```text
+/api/v1/sign/sign-in 
+```
+
+Params (POST)
+```php
+function (string $login, string $password): array
+```
+
+Return
+```neon
+loginStatus: bool
+errorMsg: null|string
 ```
