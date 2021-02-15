@@ -1,0 +1,19 @@
+parameters:
+	user:
+		entity: SatraGlobalPackage\User\BaseUser
+
+services:
+	satraGlobalPackage.security.userManager: SatraGlobalPackage\User\UserManager(%user%)
+	- SatraGlobalPackage\User\UserManagerAccessor
+	- SatraGlobalPackage\User\UserInicializeCommand
+	- SatraGlobalPackage\User\UserGroupCreateCommand
+	- SatraGlobalPackage\User\UserCreateCommand
+	- SatraGlobalPackage\User\Authorizator
+
+orm.annotations:
+	paths:
+		SatraGlobalPackage\User: %appDir%/../vendor/satraglobal-package/user/src/Entity
+
+extensions:
+	doctrine2identity: SatraGlobalPackage\User\IdentityExtension
+	user: SatraGlobalPackage\User\UserExtension

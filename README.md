@@ -1,2 +1,3 @@
 # user
-User package for custom Nette framework by Mati-Core
+
+User package for nette
