@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\UUID\UuidIdentifier;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +14,7 @@ use Nette\Utils\Strings;
 
 /**
  * Class UserGroup
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  * @ORM\Entity()
  * @ORM\Table(name="user__user_goup", indexes={
 @ORM\Index(name="index_slug", columns={"slug"}),
@@ -35,7 +35,7 @@ class UserGroup
 
 	/**
 	 * @var UserGroupLang[]|Collection|ArrayCollection|PersistentCollection
-	 * @ORM\OneToMany(targetEntity="\SatraGlobalPackage\User\UserGroupLang", mappedBy="userGroup",
+	 * @ORM\OneToMany(targetEntity="\MatiCore\User\UserGroupLang", mappedBy="userGroup",
 	 *     cascade={"remove","persist"})
 	 */
 	private $names;
@@ -60,7 +60,7 @@ class UserGroup
 
 	/**
 	 * @var UserRole[]|Collection|ArrayCollection|PersistentCollection
-	 * @ORM\ManyToMany(targetEntity="\SatraGlobalPackage\User\UserRole", inversedBy="groups")
+	 * @ORM\ManyToMany(targetEntity="\MatiCore\User\UserRole", inversedBy="groups")
 	 * @ORM\JoinTable(
 	 *     name="user__user_group_role",
 	 *     joinColumns={@ORM\JoinColumn(name="user_group_id", referencedColumnName="id")},

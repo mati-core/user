@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\UUID\UuidIdentifier;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +14,7 @@ use Nette\Utils\Strings;
 
 /**
  * Class UserRole
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  * @ORM\Entity()
  * @ORM\Table(name="user__user_role")
  */
@@ -32,7 +32,7 @@ class UserRole
 
 	/**
 	 * @var UserRoleLang[]|Collection|ArrayCollection|PersistentCollection
-	 * @ORM\OneToMany(targetEntity="\SatraGlobalPackage\User\UserRoleLang", mappedBy="userRole")
+	 * @ORM\OneToMany(targetEntity="\MatiCore\User\UserRoleLang", mappedBy="userRole")
 	 */
 	private $names;
 
@@ -44,14 +44,14 @@ class UserRole
 
 	/**
 	 * @var UserGroup[]|Collection|ArrayCollection|PersistentCollection
-	 * @ORM\ManyToMany(targetEntity="\SatraGlobalPackage\User\UserGroup", mappedBy="roles")
+	 * @ORM\ManyToMany(targetEntity="\MatiCore\User\UserGroup", mappedBy="roles")
 	 * @ORM\JoinTable(name="user__user_group_role")
 	 */
 	private $groups;
 
 	/**
 	 * @var UserRight[]|Collection|ArrayCollection|PersistentCollection
-	 * @ORM\ManyToMany(targetEntity="\SatraGlobalPackage\User\UserRight", inversedBy="roles")
+	 * @ORM\ManyToMany(targetEntity="\MatiCore\User\UserRight", inversedBy="roles")
 	 * @ORM\JoinTable(name="user__user_roles_right",
 	 *     joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")},
 	 *     inverseJoinColumns={@ORM\JoinColumn(name="right_id", referencedColumnName="id")}

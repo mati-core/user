@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 
 use Nette\Configurator;
@@ -12,7 +12,7 @@ use Nette\Security\IUserStorage;
 
 /**
  * Class IdentityExtension
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class IdentityExtension extends CompilerExtension
 {

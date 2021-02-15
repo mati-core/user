@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\EntityManager;
 use Baraja\Doctrine\EntityManagerException;
@@ -14,7 +14,7 @@ use Nette\Security\IIdentity;
 
 /**
  * Class UserStorage
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class UserStorage extends NetteUserStorage
 {

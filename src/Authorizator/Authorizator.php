@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 
 use Nette\Security\IAuthorizator;
@@ -11,7 +11,7 @@ use Tracy\Debugger;
 
 /**
  * Class Authorizator
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class Authorizator implements IAuthorizator
 {

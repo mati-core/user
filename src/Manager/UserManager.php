@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 
 use Baraja\Doctrine\DatabaseException;
@@ -27,7 +27,7 @@ use Tracy\Debugger;
 
 /**
  * Class UserManager
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class UserManager implements IAuthenticator
 {

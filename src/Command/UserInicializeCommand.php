@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 
 use Baraja\Console\Helpers;
@@ -10,7 +10,7 @@ use Baraja\Doctrine\EntityManager;
 use Doctrine\DBAL\Exception\NonUniqueFieldNameException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use SatraGlobalPackage\User\UserManager;
+use MatiCore\User\UserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

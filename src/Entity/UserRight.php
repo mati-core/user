@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\UUID\UuidIdentifier;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +13,7 @@ use Nette\SmartObject;
 
 /**
  * Class UserRight
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  * @ORM\Entity()
  * @ORM\Table(name="user__user_right")
  */
@@ -37,13 +37,13 @@ class UserRight
 
 	/**
 	 * @var UserRightLang[]|ArrayCollection|Collection|PersistentCollection
-	 * @ORM\OneToMany(targetEntity="\SatraGlobalPackage\User\UserRightLang", mappedBy="right")
+	 * @ORM\OneToMany(targetEntity="\MatiCore\User\UserRightLang", mappedBy="right")
 	 */
 	private $names;
 
 	/**
 	 * @var UserRole[]|ArrayCollection|Collection|PersistentCollection
-	 * @ORM\ManyToMany(targetEntity="\SatraGlobalPackage\User\UserRole", mappedBy="rights")
+	 * @ORM\ManyToMany(targetEntity="\MatiCore\User\UserRole", mappedBy="rights")
 	 */
 	private $roles;
 

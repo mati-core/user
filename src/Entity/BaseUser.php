@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\UUID\UuidIdentifier;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,7 +36,7 @@ class BaseUser implements IIdentity, IUser
 
 	/**
 	 * @var UserGroup
-	 * @ORM\ManyToOne(targetEntity="\SatraGlobalPackage\User\UserGroup")
+	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserGroup")
 	 * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
 	 */
 	private $group;

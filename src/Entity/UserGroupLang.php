@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\UUID\UuidIdentifier;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Nette\SmartObject;
 
 /**
  * Class UserGroupLang
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  * @ORM\Entity()
  * @ORM\Table(name="user__user_group_lang",
  *    uniqueConstraints={
@@ -29,7 +29,7 @@ class UserGroupLang
 
 	/**
 	 * @var UserGroup
-	 * @ORM\ManyToOne(targetEntity="\SatraGlobalPackage\User\UserGroup", inversedBy="names")
+	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserGroup", inversedBy="names")
 	 * @ORM\JoinColumn(name="group_id")
 	 */
 	private $userGroup;

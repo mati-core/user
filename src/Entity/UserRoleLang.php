@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Baraja\Doctrine\UUID\UuidIdentifier;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Nette\SmartObject;
 
 /**
  * Class UserRoleLang
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  * @ORM\Entity()
  * @ORM\Table(name="user__user_role_lang",
  *    uniqueConstraints={
@@ -29,7 +29,7 @@ class UserRoleLang
 
 	/**
 	 * @var UserRole
-	 * @ORM\ManyToOne(targetEntity="\SatraGlobalPackage\User\UserRole", inversedBy="names")
+	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserRole", inversedBy="names")
 	 * @ORM\JoinColumn(name="role_id")
 	 */
 	private $userRole;

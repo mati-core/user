@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 /**
  * Class IncorectUsernameException
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class IncorectUsernameException extends UserException
 {

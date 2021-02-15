@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 use Nette\Security\Passwords;
 
 /**
  * Class UserSecurity
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class UserPassword
 {

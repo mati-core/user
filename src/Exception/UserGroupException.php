@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 /**
  * Class UserException
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 class UserGroupException extends \Exception
 {

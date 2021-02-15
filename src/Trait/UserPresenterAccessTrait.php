@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 /**
  * Trait UserAccessTrait
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 trait UserPresenterAccessTrait
 {

@@ -1,19 +1,19 @@
 parameters:
 	user:
-		entity: SatraGlobalPackage\User\BaseUser
+		entity: MatiCore\User\BaseUser
 
 services:
-	satraGlobalPackage.security.userManager: SatraGlobalPackage\User\UserManager(%user%)
-	- SatraGlobalPackage\User\UserManagerAccessor
-	- SatraGlobalPackage\User\UserInicializeCommand
-	- SatraGlobalPackage\User\UserGroupCreateCommand
-	- SatraGlobalPackage\User\UserCreateCommand
-	- SatraGlobalPackage\User\Authorizator
+	satraGlobalPackage.security.userManager: MatiCore\User\UserManager(%user%)
+	- MatiCore\User\UserManagerAccessor
+	- MatiCore\User\UserInicializeCommand
+	- MatiCore\User\UserGroupCreateCommand
+	- MatiCore\User\UserCreateCommand
+	- MatiCore\User\Authorizator
 
 orm.annotations:
 	paths:
-		SatraGlobalPackage\User: %appDir%/../vendor/satraglobal-package/user/src/Entity
+		MatiCore\User: %appDir%/../vendor/satraglobal-package/user/src/Entity
 
 extensions:
-	doctrine2identity: SatraGlobalPackage\User\IdentityExtension
-	user: SatraGlobalPackage\User\UserExtension
+	doctrine2identity: MatiCore\User\IdentityExtension
+	user: MatiCore\User\UserExtension

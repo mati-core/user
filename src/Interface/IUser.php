@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SatraGlobalPackage\User;
+namespace MatiCore\User;
 
 /**
  * Interface IUser
- * @package SatraGlobalPackage\User
+ * @package MatiCore\User
  */
 interface IUser
 {
