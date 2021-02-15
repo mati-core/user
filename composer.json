@@ -1,6 +1,6 @@
 {
 	"name": "mati-core/user",
-	"license": "MIT",
+	"license": "Satra Global, s.r.o.",
 	"description": "User core for nette framework",
 	"homepage": "https://github.com/mati-core/user",
 	"authors": [
@@ -10,7 +10,7 @@
 		}
 	],
 	"require": {
-		"php": ">=7.3",
+		"php": ">=8.0",
 		"nette/application": "^3.0",
 		"nette/security": "^3.0",
 		"nette/utils": "^3.0",
