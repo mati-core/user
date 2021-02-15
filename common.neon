@@ -12,7 +12,7 @@ services:
 
 orm.annotations:
 	paths:
-		MatiCore\User: %appDir%/../vendor/satraglobal-package/user/src/Entity
+		MatiCore\User: %appDir%/../vendor/mati-core/user/src/Entity
 
 extensions:
 	doctrine2identity: MatiCore\User\IdentityExtension
