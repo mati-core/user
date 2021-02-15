@@ -1,6 +1,6 @@
 {
 	"name": "mati-core/user",
-	"license": "Satra Global, s.r.o.",
+	"license": "MIT",
 	"description": "User core for nette framework",
 	"homepage": "https://github.com/mati-core/user",
 	"authors": [
