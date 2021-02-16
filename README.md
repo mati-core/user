@@ -19,6 +19,24 @@ protected $pageRight = 'cms';
 use UserPresenterAccessTrait;
 ```
 
+Access control
+-------
+
+**Check access method:**
+```php
+public function checkAccess(string $rightSlug): bool
+```
+
+**Call in presenter**
+```php
+$this->checkAccess('right-slug');
+```
+
+**Call in latte**
+```php
+$presenter->checkAccess('right->slug');
+```
+
 Commands
 --------
 
