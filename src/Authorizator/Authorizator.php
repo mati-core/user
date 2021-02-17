@@ -58,8 +58,6 @@ class Authorizator implements IAuthorizator
 			return Authorizator::ALLOW;
 		}
 
-		bdump('Testing: '. $privilege);
-
 		return in_array($privilege, $group->getRights(), true) ? self::ALLOW : self::DENY;
 	}
 

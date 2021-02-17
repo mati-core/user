@@ -302,7 +302,7 @@ class BaseUser implements IIdentity, IUser
 			}
 
 			if ($this->getNameSuffix() !== null) {
-				$name .= ' ' . $this->getNameSuffix();
+				$name .= ', ' . $this->getNameSuffix();
 			}
 		}
 
@@ -445,8 +445,34 @@ class BaseUser implements IIdentity, IUser
 		}
 
 		if ($this->iconPath === null) {
-
 			return '/assets/img/user' . ($defaultUrl ?? '/avatar/avatar_1.png');
+		}
+
+		return $gravatarPath;
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 * @internal
+	 */
+	public function getGravatarIcon(): string
+	{
+		$urlPart = 'http://www.gravatar.com/avatar/' . md5($this->getEmail() ?? $this->getUsername());
+		$gravatarPath = $urlPart . '?d=monsterid&s=64';
+
+		$checkNow = $this->gravatarLastCheck === null || strtotime('-1 week') < $this->gravatarLastCheck->getTimestamp();
+
+		if ($checkNow === true) {
+			if (strpos(@get_headers($urlPart . '?d=404')[0], '200') !== false) {
+				$this->iconPath = $gravatarPath;
+			}
+
+			$this->gravatarLastCheck = DateTime::from('now');
+		}
+
+		if ($this->iconPath === null) {
+			return '/assets/img/user/avatar/gravatar.png';
 		}
 
 		return $gravatarPath;
