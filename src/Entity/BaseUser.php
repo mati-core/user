@@ -78,7 +78,7 @@ class BaseUser implements IIdentity, IUser
 	private $nameSuffix;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $email;
@@ -114,6 +114,24 @@ class BaseUser implements IIdentity, IUser
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $registerDate;
+
+	/**
+	 * @var string|null
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $loginIp;
+
+	/**
+	 * @var \DateTime|null
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	private $loginDate;
+
+	/**
+	 * @var string|null
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $loginDevice;
 
 	/**
 	 * @var \DateTime
@@ -260,17 +278,49 @@ class BaseUser implements IIdentity, IUser
 	}
 
 	/**
+	 * @param bool $withExtension
 	 * @return string
 	 */
-	public function getEmail(): string
+	public function getFullName(bool $withExtension = true): string
+	{
+		if ($this->getFirstName() === null && $this->getLastName() === null) {
+			return $this->getUsername();
+		}
+
+		$name = $this->getFirstName() ?? '';
+		if ($this->getLastName() !== null) {
+			if ($name === '') {
+				$name .= ' ';
+			}
+
+			$name .= $this->getLastName();
+		}
+
+		if ($withExtension === true) {
+			if ($this->getNamePrefix() !== null) {
+				$name = $this->getNamePrefix() . ' ' . $name;
+			}
+
+			if ($this->getNameSuffix() !== null) {
+				$name .= ' ' . $this->getNameSuffix();
+			}
+		}
+
+		return $name;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getEmail(): ?string
 	{
 		return $this->email;
 	}
 
 	/**
-	 * @param string $email
+	 * @param string|null $email
 	 */
-	public function setEmail(string $email): void
+	public function setEmail(?string $email): void
 	{
 		$this->email = $email;
 	}
@@ -321,6 +371,133 @@ class BaseUser implements IIdentity, IUser
 	public function setRegisterDate(\DateTime $registerDate): void
 	{
 		$this->registerDate = $registerDate;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getIconPath(): ?string
+	{
+		return $this->iconPath;
+	}
+
+	/**
+	 * @param string|null $iconPath
+	 */
+	public function setIconPath(?string $iconPath): void
+	{
+		$this->iconPath = $iconPath;
+	}
+
+	/**
+	 * @return \DateTime|null
+	 */
+	public function getGravatarLastCheck(): ?\DateTime
+	{
+		return $this->gravatarLastCheck;
+	}
+
+	/**
+	 * @param \DateTime|null $gravatarLastCheck
+	 */
+	public function setGravatarLastCheck(?\DateTime $gravatarLastCheck): void
+	{
+		$this->gravatarLastCheck = $gravatarLastCheck;
+	}
+
+	/**
+	 * Return path to user icon.
+	 *
+	 * @param string|null $defaultUrl
+	 * @return string
+	 */
+	public function getIcon(?string $defaultUrl = null): string
+	{
+		if ($this->iconPath !== null && $this->iconPath !== 'gravatar') {
+			if (
+				$this->iconPath === '1'
+				|| $this->iconPath === '2'
+				|| $this->iconPath === '3'
+				|| $this->iconPath === '4'
+				|| $this->iconPath === '5'
+			) {
+				return '/assets/img/user/avatar/avatar_' . $this->iconPath . '.png';
+			}
+
+			return $this->iconPath;
+		}
+
+		if($defaultUrl === ''){
+			$defaultUrl = null;
+		}
+
+		$urlPart = 'http://www.gravatar.com/avatar/' . md5($this->getEmail() ?? $this->getUsername());
+		$gravatarPath = $urlPart . '?d=monsterid&s=64';
+
+		$checkNow = $this->gravatarLastCheck === null || strtotime('-1 week') < $this->gravatarLastCheck->getTimestamp();
+
+		if ($checkNow === true) {
+			if (strpos(@get_headers($urlPart . '?d=404')[0], '200') !== false) {
+				$this->iconPath = $gravatarPath;
+			}
+
+			$this->gravatarLastCheck = DateTime::from('now');
+		}
+
+		if ($this->iconPath === null) {
+
+			return '/assets/img/user' . ($defaultUrl ?? '/avatar/avatar_1.png');
+		}
+
+		return $gravatarPath;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getLoginIp(): ?string
+	{
+		return $this->loginIp;
+	}
+
+	/**
+	 * @param string|null $loginIp
+	 */
+	public function setLoginIp(?string $loginIp): void
+	{
+		$this->loginIp = $loginIp;
+	}
+
+	/**
+	 * @return \DateTime|null
+	 */
+	public function getLoginDate(): ?\DateTime
+	{
+		return $this->loginDate;
+	}
+
+	/**
+	 * @param \DateTime|null $loginDate
+	 */
+	public function setLoginDate(?\DateTime $loginDate): void
+	{
+		$this->loginDate = $loginDate;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getLoginDevice(): ?string
+	{
+		return $this->loginDevice;
+	}
+
+	/**
+	 * @param string|null $loginDevice
+	 */
+	public function setLoginDevice(?string $loginDevice): void
+	{
+		$this->loginDevice = $loginDevice;
 	}
 
 	/**

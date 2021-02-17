@@ -17,12 +17,14 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\PersistentCollection;
 use Nette\Application\AbortException;
+use Nette\Http\Request;
 use Nette\Security\IAuthenticator;
 use Nette\Security\IAuthorizator;
 use Nette\Security\IIdentity;
 use Nette\Security\IUserStorage;
 use Nette\Security\Passwords;
 use Nette\Security\User;
+use Nette\Utils\DateTime;
 use Tracy\Debugger;
 
 /**
@@ -53,18 +55,25 @@ class UserManager implements IAuthenticator
 	private $authorizator;
 
 	/**
+	 * @var Request
+	 */
+	private $httpRequest;
+
+	/**
 	 * UserManager constructor.
 	 * @param array<string> $params
 	 * @param EntityManager $entityManager
 	 * @param IUserStorage $userStorage
 	 * @param IAuthorizator $authorizator
+	 * @param Request $httpRequest
 	 */
-	public function __construct(array $params, EntityManager $entityManager, IUserStorage $userStorage, IAuthorizator $authorizator)
+	public function __construct(array $params, EntityManager $entityManager, IUserStorage $userStorage, IAuthorizator $authorizator, Request $httpRequest)
 	{
 		$this->params = $params;
 		$this->entityManager = $entityManager;
 		$this->userStorage = $userStorage;
 		$this->authorizator = $authorizator;
+		$this->httpRequest = $httpRequest;
 	}
 
 	/**
@@ -336,6 +345,14 @@ class UserManager implements IAuthenticator
 			if (!$user instanceof BaseUser) {
 				throw new UserException('User must be / or extend BaseUser!');
 			}
+			
+			$date = DateTime::from('NOW');
+			$user->setLoginDate($date);
+			$user->setLoginIp($this->httpRequest->getRemoteAddress());
+			$user->setLoginDevice($this->httpRequest->getHeader('User-Agent'));
+			$user->getIcon(); //Check icon
+
+			$this->entityManager->flush($user);
 
 			$instance = new StorageIdentity($user->getId(), $user);
 
@@ -345,6 +362,8 @@ class UserManager implements IAuthenticator
 			return $instance;
 		} catch (NoResultException | NonUniqueResultException $e) {
 			throw new IncorectUsernameException('User doesn`t exists.');
+		}catch (EntityManagerException $e){
+			throw new UserException('Error update database data.');
 		}
 	}
 
