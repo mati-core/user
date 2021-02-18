@@ -278,6 +278,18 @@ class BaseUser implements IIdentity, IUser
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getName(bool $reverse = false): string
+	{
+		if ($reverse === true) {
+			return $this->getReversedFullName();
+		}
+
+		return $this->getFullName(false);
+	}
+
+	/**
 	 * @param bool $withExtension
 	 * @return string
 	 */
@@ -307,6 +319,26 @@ class BaseUser implements IIdentity, IUser
 		}
 
 		return $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReversedFullName(): string
+	{
+		if ($this->getLastName() !== null && $this->getFirstName() !== null) {
+			return $this->getLastName() . ', ' . $this->getFirstName();
+		}
+
+		if ($this->getLastName() !== null) {
+			return $this->getLastName();
+		}
+
+		if ($this->getFirstName() !== null) {
+			return $this->getFirstName();
+		}
+
+		return $this->getUsername();
 	}
 
 	/**
@@ -427,7 +459,7 @@ class BaseUser implements IIdentity, IUser
 			return $this->iconPath;
 		}
 
-		if($defaultUrl === ''){
+		if ($defaultUrl === '') {
 			$defaultUrl = null;
 		}
 
@@ -564,6 +596,14 @@ class BaseUser implements IIdentity, IUser
 	public function getRoles(): array
 	{
 		return $this->roles ?? throw new UserException('User roles doesn\'t loaded. Use $userManager->loadRoles(IUser $user)');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function __toString(): string
+	{
+		return $this->getFullName(false);
 	}
 
 }

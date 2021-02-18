@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MatiCore\User;
 
+use MatiCore\Menu\Entity\MenuItem;
+use Nette\Application\UI\InvalidLinkException;
+
 /**
  * Trait UserAccessTrait
  * @package MatiCore\User
@@ -58,6 +61,28 @@ trait UserPresenterAccessTrait
 	public function checkAccess(string $rightSlug): bool
 	{
 		return $this->userManager->get()->checkAccess($this->user, $rightSlug);
+	}
+
+	/**
+	 * @param MenuItem $menuItem
+	 * @return bool
+	 * @throws InvalidLinkException
+	 */
+	public function isMenuItemActive(MenuItem $menuItem): bool
+	{
+		if ($menuItem->getRoute() !== null && $this->isLinkCurrent($menuItem->getRoute())) {
+			return true;
+		}
+
+		if ($menuItem->hasChildren()) {
+			foreach ($menuItem->getChildren() as $child) {
+				if ($this->isMenuItemActive($child)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 	
 }

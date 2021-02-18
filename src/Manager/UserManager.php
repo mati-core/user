@@ -117,7 +117,7 @@ class UserManager implements IAuthenticator
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
-	public function getUserGroupById(string $id): IUser
+	public function getUserGroupById(string $id): UserGroup
 	{
 		return $this->entityManager->getRepository(UserGroup::class)
 			->createQueryBuilder('ug')
@@ -134,7 +134,7 @@ class UserManager implements IAuthenticator
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
-	public function getUserGroupBySlug(string $slug): IUser
+	public function getUserGroupBySlug(string $slug): UserGroup
 	{
 		return $this->entityManager->getRepository(UserGroup::class)
 			->createQueryBuilder('ug')
@@ -183,7 +183,7 @@ class UserManager implements IAuthenticator
 					->select('ug')
 					->where('ug.superAdmin = :f')
 					->setParameter('f', false)
-					->orderBy('name', 'ASC')
+					->orderBy('ug.name', 'ASC')
 					->getQuery()
 					->getResult() ?? [];
 		}
