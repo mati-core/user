@@ -117,4 +117,22 @@ class UserRight
 		$this->names[] = $name;
 	}
 
+	/**
+	 * @param string $description
+	 * TODO: implement me!
+	 */
+	public function setDescription(string $description): void
+	{
+
+	}
+
+	/**
+	 * @return string
+	 * TODO: implement me!
+	 */
+	public function getDescription(): string
+	{
+		return '';
+	}
+
 }

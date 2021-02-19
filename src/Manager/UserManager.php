@@ -113,7 +113,7 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $id
-	 * @return UserGroup
+	 * @return IUser
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
@@ -130,7 +130,7 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $slug
-	 * @return UserGroup
+	 * @return IUser
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
@@ -192,6 +192,25 @@ class UserManager implements IAuthenticator
 	}
 
 	/**
+	 * @return array<UserRole>|ArrayCollection|PersistentCollection|Collection
+	 */
+	public function getUserRoles(): array|ArrayCollection|PersistentCollection|Collection
+	{
+		static $roles;
+
+		if ($roles === null) {
+			$roles = $this->entityManager->getRepository(UserRole::class)
+					->createQueryBuilder('ur')
+					->select('ur')
+					->orderBy('ur.name', 'ASC')
+					->getQuery()
+					->getResult() ?? [];
+		}
+
+		return $roles;
+	}
+
+	/**
 	 * @param string $id
 	 * @return UserRole
 	 * @throws NoResultException
@@ -226,6 +245,25 @@ class UserManager implements IAuthenticator
 	}
 
 	/**
+	 * @return array<UserRight>|ArrayCollection|PersistentCollection|Collection
+	 */
+	public function getUserRights(): array|ArrayCollection|PersistentCollection|Collection
+	{
+		static $rights;
+
+		if ($rights === null) {
+			$rights = $this->entityManager->getRepository(UserRight::class)
+					->createQueryBuilder('ur')
+					->select('ur')
+					->orderBy('ur.name', 'ASC')
+					->getQuery()
+					->getResult() ?? [];
+		}
+
+		return $rights;
+	}
+
+	/**
 	 * @param string $id
 	 * @return UserRight
 	 * @throws NoResultException
@@ -257,6 +295,14 @@ class UserManager implements IAuthenticator
 			->setParameter('slug', $slug)
 			->getQuery()
 			->getSingleResult();
+	}
+
+	/**
+	 * @param UserRight $right
+	 */
+	public function removeRight(UserRight $right): void
+	{
+		$this->entityManager->remove($right)->flush();
 	}
 
 	/**
@@ -345,7 +391,7 @@ class UserManager implements IAuthenticator
 			if (!$user instanceof BaseUser) {
 				throw new UserException('User must be / or extend BaseUser!');
 			}
-			
+
 			$date = DateTime::from('NOW');
 			$user->setLoginDate($date);
 			$user->setLoginIp($this->httpRequest->getRemoteAddress());
@@ -362,7 +408,7 @@ class UserManager implements IAuthenticator
 			return $instance;
 		} catch (NoResultException | NonUniqueResultException $e) {
 			throw new IncorectUsernameException('User doesn`t exists.');
-		}catch (EntityManagerException $e){
+		} catch (EntityManagerException $e) {
 			throw new UserException('Error update database data.');
 		}
 	}
@@ -386,7 +432,7 @@ class UserManager implements IAuthenticator
 			} elseif ($this->userStorage->isAuthenticated() === true) {
 				throw new AbortException('Is authenticated');
 			}
-		} catch (\Throwable|EntityManagerException|ORMException $e) {
+		} catch (\Throwable | EntityManagerException | ORMException $e) {
 			$this->userStorage->setIdentity(null);
 			if (isset($_SERVER['REQUEST_URI']) && !headers_sent()) {
 				header('Location: ' . $_SERVER['REQUEST_URI']);
@@ -417,8 +463,19 @@ class UserManager implements IAuthenticator
 				return Authorizator::DENY;
 			}
 
-			return $authorizer->checkAccess($storageIdentity, $privilege);
-		}catch (ORMException|EntityManagerException|UserException $e){
+			try {
+				return $authorizer->checkAccess($storageIdentity, $privilege, true);
+			} catch (SuperUserAccess $e) {
+				try {
+					$this->getRightBySlug($privilege);
+				} catch (NoResultException | NonUniqueResultException $e) {
+					$right = new UserRight($privilege, $privilege);
+					$this->entityManager->persist($right)->flush($right);
+				}
+
+				return Authorizator::ALLOW;
+			}
+		} catch (ORMException | EntityManagerException | UserException $e) {
 			Debugger::log($e);
 			$systemUser->logout(true);
 			throw new AbortException('User integrity error: ' . $e->getMessage());

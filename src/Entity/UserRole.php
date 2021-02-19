@@ -116,6 +116,21 @@ class UserRole
 	}
 
 	/**
+	 * @param UserRight $userRight
+	 * @return bool
+	 */
+	public function isRight(UserRight $userRight): bool
+	{
+		foreach ($this->getRights() as $right) {
+			if ($right->getId() === $userRight->getId()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param UserRight $right
 	 */
 	public function removeRight(UserRight $right): void

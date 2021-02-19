@@ -31,16 +31,18 @@ class Authorizator implements IAuthorizator
 	/**
 	 * @param IIdentity|null $identity
 	 * @param string $privilege
+	 * @param bool $createRightIfNotExist
 	 * @return bool
+	 * @throws UserException
 	 */
-	public function checkAccess(?IIdentity $identity, string $privilege): bool
+	public function checkAccess(?IIdentity $identity, string $privilege, bool $createRightIfNotExist = false): bool
 	{
 		if ($identity instanceof StorageIdentity && $identity->getUser() instanceof BaseUser) {
-			return $this->validate($identity->getUser(), $privilege);
+			return $this->validate($identity->getUser(), $privilege, $createRightIfNotExist);
 		}
 
 		if ($identity instanceof BaseUser) {
-			return $this->validate($identity, $privilege);
+			return $this->validate($identity, $privilege, $createRightIfNotExist);
 		}
 
 		return self::DENY;
@@ -49,12 +51,17 @@ class Authorizator implements IAuthorizator
 	/**
 	 * @param BaseUser $user
 	 * @param string $privilege
+	 * @param bool $createRightIfNotExist
 	 * @return bool
 	 */
-	private function validate(BaseUser $user, string $privilege): bool
+	private function validate(BaseUser $user, string $privilege, bool $createRightIfNotExist = false): bool
 	{
 		$group = $user->getGroup();
 		if($group->isSuperAdmin()){
+			if($createRightIfNotExist === true){
+				SuperUserAccess::Allowed();
+			}
+			
 			return Authorizator::ALLOW;
 		}
 

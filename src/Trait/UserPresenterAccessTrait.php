@@ -23,7 +23,7 @@ trait UserPresenterAccessTrait
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$this->init();
 	}
 
@@ -42,7 +42,7 @@ trait UserPresenterAccessTrait
 					throw new UserException('User must be instance of StorageIdentity!');
 				}
 
-				if(!$this->userManager->get()->checkAccess($this->user, $this->pageRight)){
+				if (!$this->userManager->get()->checkAccess($this->user, $this->pageRight)) {
 					$this->template->setFile(__DIR__ . '/templates/Error/403.latte');
 					$this->template->missingPermissions = [$this->pageRight];
 				}
@@ -61,6 +61,29 @@ trait UserPresenterAccessTrait
 	public function checkAccess(string $rightSlug): bool
 	{
 		return $this->userManager->get()->checkAccess($this->user, $rightSlug);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSuperAdmin(): bool
+	{
+		static $superAdmin;
+
+		if($superAdmin === null) {
+			$superAdmin = false;
+
+			$identity = $this->user->getIdentity();
+			if ($identity instanceof StorageIdentity) {
+				$user = $identity->getUser();
+
+				if($user instanceof BaseUser){
+					$superAdmin = $user->getGroup()->isSuperAdmin();
+				}
+			}
+		}
+
+		return $superAdmin;
 	}
 
 	/**
@@ -84,5 +107,5 @@ trait UserPresenterAccessTrait
 
 		return false;
 	}
-	
+
 }

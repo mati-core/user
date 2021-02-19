@@ -29,7 +29,7 @@ class UserRoleLang
 
 	/**
 	 * @var UserRole
-	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserRole", inversedBy="names")
+	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserRole", inversedBy="names", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="role_id")
 	 */
 	private $userRole;

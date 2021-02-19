@@ -29,7 +29,7 @@ class UserRightLang
 
 	/**
 	 * @var UserRight
-	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserRight", inversedBy="names")
+	 * @ORM\ManyToOne(targetEntity="\MatiCore\User\UserRight", inversedBy="names", cascade={"persist", "remove"})
 	 * @ORM\JoinColumn(name="right_id")
 	 */
 	private $right;
