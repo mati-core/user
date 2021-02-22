@@ -113,7 +113,7 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $id
-	 * @return UserGroup
+	 * @return IUser
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
@@ -130,7 +130,7 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $slug
-	 * @return UserGroup
+	 * @return IUser
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
@@ -242,6 +242,14 @@ class UserManager implements IAuthenticator
 			->setParameter('slug', $slug)
 			->getQuery()
 			->getSingleResult();
+	}
+
+	/**
+	 * @param UserRole $role
+	 */
+	public function removeRole(UserRole $role): void
+	{
+		$this->entityManager->remove($role)->flush();
 	}
 
 	/**
@@ -466,11 +474,13 @@ class UserManager implements IAuthenticator
 			try {
 				return $authorizer->checkAccess($storageIdentity, $privilege, true);
 			} catch (SuperUserAccess $e) {
-				try {
-					$this->getRightBySlug($privilege);
-				} catch (NoResultException | NonUniqueResultException $e) {
-					$right = new UserRight($privilege, $privilege);
-					$this->entityManager->persist($right)->flush($right);
+				if ($privilege !== 'super-admin') {
+					try {
+						$this->getRightBySlug($privilege);
+					} catch (NoResultException | NonUniqueResultException $e) {
+						$right = new UserRight($privilege, $privilege);
+						$this->entityManager->persist($right)->flush($right);
+					}
 				}
 
 				return Authorizator::ALLOW;

@@ -37,6 +37,26 @@ interface IUser
 	public function getLastName(): ?string;
 
 	/**
+	 * @return string|null
+	 */
+	public function getEmail(): ?string;
+
+	/**
+	 * @return UserGroup
+	 */
+	public function getGroup(): UserGroup;
+
+	/**
+	 * @return string|null
+	 */
+	public function getPhone(): ?string;
+
+	/**
+	 * @return string|null
+	 */
+	public function getIconPath(): ?string;
+
+	/**
 	 * @return bool
 	 */
 	public function isActive(): bool;

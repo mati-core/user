@@ -168,7 +168,7 @@ class BaseUser implements IIdentity, IUser
 	/**
 	 * @return UserGroup
 	 */
-	public function getGroup()
+	public function getGroup(): UserGroup
 	{
 		return $this->group;
 	}
