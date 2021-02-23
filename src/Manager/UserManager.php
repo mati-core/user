@@ -113,7 +113,7 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $id
-	 * @return IUser
+	 * @return UserGroup
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
@@ -130,7 +130,7 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $slug
-	 * @return IUser
+	 * @return UserGroup
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
