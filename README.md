@@ -1,5 +1,11 @@
 # Mati-Core  | USER
 
+[![Latest Stable Version](https://poser.pugx.org/mati-core/user/v)](//packagist.org/packages/mati-core/user)
+[![Total Downloads](https://poser.pugx.org/mati-core/user/downloads)](//packagist.org/packages/mati-core/user)
+![Integrity check](https://github.com/mati-core/menu/workflows/Integrity%20check/badge.svg)
+[![Latest Unstable Version](https://poser.pugx.org/mati-core/user/v/unstable)](//packagist.org/packages/mati-core/user)
+[![License](https://poser.pugx.org/mati-core/user/license)](//packagist.org/packages/mati-core/user)
+
 Install
 -------
 
