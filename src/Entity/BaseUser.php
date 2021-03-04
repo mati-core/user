@@ -301,7 +301,7 @@ class BaseUser implements IIdentity, IUser
 
 		$name = $this->getFirstName() ?? '';
 		if ($this->getLastName() !== null) {
-			if ($name === '') {
+			if ($name !== '') {
 				$name .= ' ';
 			}
 
@@ -592,6 +592,7 @@ class BaseUser implements IIdentity, IUser
 
 	/**
 	 * @return string[]
+	 * @throws UserException
 	 */
 	public function getRoles(): array
 	{
