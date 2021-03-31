@@ -22,7 +22,6 @@ use Nette\Security\IAuthenticator;
 use Nette\Security\IAuthorizator;
 use Nette\Security\IIdentity;
 use Nette\Security\IUserStorage;
-use Nette\Security\Passwords;
 use Nette\Security\User;
 use Nette\Utils\DateTime;
 use Tracy\Debugger;
@@ -77,13 +76,29 @@ class UserManager implements IAuthenticator
 	}
 
 	/**
+	 * @param string|null $userEntityName
+	 * @return array|Collection,0
+	 *
+	 */
+	public function getAllUsers(?string $userEntityName = null): array|Collection
+	{
+		return $this->entityManager->getRepository($userEntityName ?? $this->getUserEntityName())
+			->createQueryBuilder('u')
+			->select('u')
+			->orderBy('u.lastName', 'ASC')
+			->addOrderBy('u.firstName', 'ASC')
+			->getQuery()
+			->getResult() ?? [];
+	}
+
+	/**
 	 * @param string $id
-	 * @param string $userEntityName
+	 * @param string|null $userEntityName
 	 * @return IUser
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
-	public function getUserById(string $id, string $userEntityName = null): IUser
+	public function getUserById(string $id, ?string $userEntityName = null): IUser
 	{
 		return $this->entityManager->getRepository($userEntityName ?? $this->getUserEntityName())
 			->createQueryBuilder('u')
@@ -96,11 +111,12 @@ class UserManager implements IAuthenticator
 
 	/**
 	 * @param string $username
+	 * @param string|null $userEntityName
 	 * @return IUser
 	 * @throws NoResultException
 	 * @throws NonUniqueResultException
 	 */
-	public function getUserByUserName(string $username): IUser
+	public function getUserByUserName(string $username, ?string $userEntityName = null): IUser
 	{
 		return $this->entityManager->getRepository($userEntityName ?? $this->getUserEntityName())
 			->createQueryBuilder('u')
@@ -346,7 +362,7 @@ class UserManager implements IAuthenticator
 	 * @param string|null $password
 	 * @param UserGroup|null $userGroup
 	 * @return IUser
-	 * @throws DatabaseException
+	 * @throws UserGroupException
 	 */
 	public function createUser(string $userName, ?string $password = null, ?UserGroup $userGroup = null): IUser
 	{
@@ -367,6 +383,9 @@ class UserManager implements IAuthenticator
 	 * @param string $login
 	 * @param string $password
 	 * @return IIdentity
+	 * @throws IncorectPasswordException
+	 * @throws IncorectUsernameException
+	 * @throws UserException
 	 */
 	public function signIn(string $login, string $password): IIdentity
 	{
@@ -374,7 +393,7 @@ class UserManager implements IAuthenticator
 	}
 
 	/**
-	 * @param array<string>|string[] $credentials
+	 * @param array<string> $credentials
 	 * @return IIdentity
 	 * @throws IncorectPasswordException
 	 * @throws IncorectUsernameException
@@ -455,6 +474,7 @@ class UserManager implements IAuthenticator
 	 * @param User $systemUser
 	 * @param string $privilege
 	 * @return bool
+	 * @throws AbortException
 	 */
 	public function checkAccess(User $systemUser, string $privilege): bool
 	{

@@ -22,6 +22,7 @@ use Nette\Utils\DateTime;
  * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator", type="string")
+ * @method array getData()
  */
 class BaseUser implements IIdentity, IUser
 {
@@ -598,13 +599,4 @@ class BaseUser implements IIdentity, IUser
 	{
 		return $this->roles ?? throw new UserException('User roles doesn\'t loaded. Use $userManager->loadRoles(IUser $user)');
 	}
-
-	/**
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return $this->getFullName(false);
-	}
-
 }
