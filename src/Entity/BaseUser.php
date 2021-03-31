@@ -599,4 +599,12 @@ class BaseUser implements IIdentity, IUser
 	{
 		return $this->roles ?? throw new UserException('User roles doesn\'t loaded. Use $userManager->loadRoles(IUser $user)');
 	}
+
+	/**
+	 * @return string
+	 */
+	public function __toString(): string
+	{
+		return $this->getFullName(false);
+	}
 }
