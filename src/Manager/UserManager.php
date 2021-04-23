@@ -83,12 +83,15 @@ class UserManager implements IAuthenticator
 	public function getAllUsers(?string $userEntityName = null): array|Collection
 	{
 		return $this->entityManager->getRepository($userEntityName ?? $this->getUserEntityName())
-			->createQueryBuilder('u')
-			->select('u')
-			->orderBy('u.lastName', 'ASC')
-			->addOrderBy('u.firstName', 'ASC')
-			->getQuery()
-			->getResult() ?? [];
+				->createQueryBuilder('u')
+				->select('u')
+				->join('u.group', 'g')
+				->where('g.slug != :superAdmin')
+				->setParameter('superAdmin', 'group-super-admin')
+				->orderBy('u.lastName', 'ASC')
+				->addOrderBy('u.firstName', 'ASC')
+				->getQuery()
+				->getResult() ?? [];
 	}
 
 	/**
