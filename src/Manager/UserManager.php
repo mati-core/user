@@ -355,7 +355,7 @@ class UserManager implements IAuthenticator
 			$userGroup->setDefault(true);
 		}
 
-		$this->entityManager->persist($userGroup)->flush($userGroup);
+		$this->entityManager->persist($userGroup)->getUnitOfWork()->commit($userGroup);
 
 		return $userGroup;
 	}
@@ -377,7 +377,7 @@ class UserManager implements IAuthenticator
 
 		/** @var IUser $user */
 		$user = new $entityType($userGroup, $userName, UserPassword::hash($password));
-		$this->entityManager->persist($user)->flush($user);
+		$this->entityManager->persist($user)->getUnitOfWork()->commit($user);
 
 		return $user;
 	}
@@ -415,7 +415,7 @@ class UserManager implements IAuthenticator
 
 			if (UserPassword::needsRehash($user->getPassword())) {
 				$user->setPassword(UserPassword::hash($password));
-				$this->entityManager->flush($user);
+				$this->entityManager->getUnitOfWork()->commit($user);
 			}
 
 			if (!$user instanceof BaseUser) {
@@ -428,7 +428,7 @@ class UserManager implements IAuthenticator
 			$user->setLoginDevice($this->httpRequest->getHeader('User-Agent'));
 			$user->getIcon(); //Check icon
 
-			$this->entityManager->flush($user);
+			$this->entityManager->getUnitOfWork()->commit($user);
 
 			$instance = new StorageIdentity($user->getId(), $user);
 
@@ -502,7 +502,7 @@ class UserManager implements IAuthenticator
 						$this->getRightBySlug($privilege);
 					} catch (NoResultException | NonUniqueResultException $e) {
 						$right = new UserRight($privilege, $privilege);
-						$this->entityManager->persist($right)->flush($right);
+						$this->entityManager->persist($right)->getUnitOfWork()->commit($right);
 					}
 				}
 
